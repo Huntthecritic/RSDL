@@ -1,10 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from 'lucide-react';
-import React from 'react';
+import { Github, Linkedin, Twitter, Mail, ArrowUpRight, Send } from 'lucide-react';
+import React, { useState } from 'react';
 
-const footerLinks = {
+const footerSections = {
   Services: [
     { label: 'Web Development', href: '#' },
     { label: 'UI/UX Design', href: '#' },
@@ -32,53 +32,90 @@ const socialLinks = [
   { icon: Mail, href: '#', label: 'Email' },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const itemVariants = {
+const fadeInUpVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
+  visible: { opacity: 1, y: 0 },
 };
 
 export function Footer() {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    }
+  };
+
   return (
-    <footer className="bg-gradient-to-b from-white to-[#2A2A3E] text-white pt-20 pb-8 px-6 relative overflow-hidden">
-      {/* Subtle background elements */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#AE14D9]/5 to-transparent rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#7216F2]/5 to-transparent rounded-full blur-3xl -z-10" />
+    <footer className="bg-slate-950 text-white pt-20 pb-12 px-6 relative overflow-hidden">
+      {/* Ambient background elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-600/10 to-transparent rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-indigo-600/10 to-transparent rounded-full blur-3xl -z-10" />
 
       <div className="max-w-7xl mx-auto">
-        {/* Main footer content */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16"
-        >
-          {/* Brand section */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#7216F2] to-[#513DD9] rounded-lg" />
-              <h3 className="text-2xl font-bold text-white">REElspan</h3>
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+          {/* Brand & Newsletter Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUpVariants}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-4"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg">R</span>
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                Reel Span
+              </h3>
             </div>
-            <p className="text-white/60 leading-relaxed font-light text-sm">
-              Building exceptional digital experiences through innovation, strategy, and flawless execution.
+            <p className="text-slate-400 leading-relaxed text-sm mb-8 font-light">
+              Crafting exceptional digital experiences through innovation, strategy, and flawless execution. We transform visions into remarkable digital solutions.
             </p>
-            {/* Social links inline */}
-            <div className="flex items-center gap-4 mt-6">
+
+            {/* Newsletter Signup */}
+            <div className="mb-8">
+              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 block">
+                Stay Updated
+              </label>
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="flex-1 px-4 py-3 rounded-lg bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors text-sm"
+                  required
+                />
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 text-white font-medium flex items-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                </motion.button>
+              </form>
+              {subscribed && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-green-400 text-xs mt-2"
+                >
+                  Thanks for subscribing!
+                </motion.p>
+              )}
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3">
               {socialLinks.map((social, index) => {
                 const Icon = social.icon;
                 return (
@@ -86,78 +123,104 @@ export function Footer() {
                     key={index}
                     href={social.href}
                     aria-label={social.label}
-                    whileHover={{ scale: 1.15 }}
-                    className="p-2 bg-white/5 hover:bg-white/15 rounded-lg transition-colors duration-300"
+                    whileHover={{ scale: 1.2, y: -4 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-3 bg-slate-900 hover:bg-gradient-to-br hover:from-purple-600 hover:to-indigo-600 rounded-lg transition-all duration-300"
                   >
-                    <Icon className="w-4 h-4 text-white/80" />
+                    <Icon className="w-5 h-5 text-slate-300 hover:text-white" />
                   </motion.a>
                 );
               })}
             </div>
           </motion.div>
 
-          {/* Links sections */}
-          {Object.entries(footerLinks).map(([category, links], index) => (
-            <motion.div key={index} variants={itemVariants}>
-              <h4 className="text-xs font-semibold text-white mb-5 uppercase tracking-wider opacity-80">
-                {category}
-              </h4>
-              <ul className="space-y-2.5">
-                {links.map((link, idx) => (
-                  <li key={idx}>
-                    <motion.a
-                      href={link.href}
-                      whileHover={{ x: 3 }}
-                      className="text-white/60 hover:text-white/90 transition-colors duration-200 text-sm font-normal flex items-center gap-1.5 group"
-                    >
-                      {link.label}
-                      <ArrowUpRight className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </motion.a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </motion.div>
+          {/* Links Sections */}
+          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {Object.entries(footerSections).map(([category, links], index) => (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUpVariants}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <h4 className="text-sm font-semibold text-white mb-6 uppercase tracking-wider">
+                  {category}
+                </h4>
+                <ul className="space-y-3.5">
+                  {links.map((link, idx) => (
+                    <li key={idx}>
+                      <motion.a
+                        href={link.href}
+                        whileHover={{ x: 4 }}
+                        className="text-slate-400 hover:text-purple-400 transition-colors duration-200 text-sm font-normal flex items-center gap-2 group"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-600/0 group-hover:bg-purple-500 transition-all" />
+                        {link.label}
+                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity group-hover:translate-x-0.5" />
+                      </motion.a>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
         {/* Divider */}
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="border-t border-white/5 mb-8 origin-left"
+          className="border-t border-slate-800 mb-8 origin-left"
         />
 
-        {/* Bottom section */}
+        {/* Footer Bottom */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
+          variants={fadeInUpVariants}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col md:flex-row items-center justify-between gap-6"
         >
-          {/* Copyright and links */}
-          <div className="flex flex-col md:flex-row items-center gap-3 text-white/50 text-xs font-normal">
-            <p>&copy; 2024 REElspan Digital. All rights reserved.</p>
-            <div className="hidden md:block w-0.5 h-0.5 rounded-full bg-white/20" />
-            <a href="#" className="hover:text-white/80 transition-colors">
-              Privacy Policy
-            </a>
-            <div className="hidden md:block w-0.5 h-0.5 rounded-full bg-white/20" />
-            <a href="#" className="hover:text-white/80 transition-colors">
-              Terms of Service
-            </a>
+          {/* Copyright */}
+          <div className="flex flex-col md:flex-row items-center gap-4 text-slate-500 text-xs font-normal">
+            <p>&copy; 2024 Reel Span Digital. All rights reserved.</p>
+            <div className="hidden md:block w-px h-4 bg-slate-700" />
+            <div className="flex items-center gap-4">
+              <a href="#" className="hover:text-purple-400 transition-colors duration-200">
+                Privacy Policy
+              </a>
+              <span className="text-slate-700">•</span>
+              <a href="#" className="hover:text-purple-400 transition-colors duration-200">
+                Terms of Service
+              </a>
+            </div>
           </div>
- 
+
           {/* Back to top button */}
           <motion.button
-            whileHover={{ scale: 1.1, y: -2 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="p-2.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-3 bg-slate-900 hover:bg-purple-600 rounded-lg transition-all duration-300 group"
+            aria-label="Back to top"
           >
-            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            <svg
+              className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+              />
             </svg>
           </motion.button>
         </motion.div>
