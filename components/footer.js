@@ -6,22 +6,22 @@ import React, { useState } from 'react';
 
 const footerSections = {
   Services: [
-    { label: 'Web Development', href: '#' },
-    { label: 'UI/UX Design', href: '#' },
-    { label: 'Performance Optimization', href: '#' },
-    { label: 'Backend Development', href: '#' },
+    { label: 'Web Development', href: '/services' },
+    { label: 'Case Studies', href: '/case-studies' },
+    { label: 'Process', href: '/process' },
+    { label: 'Pricing', href: '/pricing' },
   ],
   Company: [
-    { label: 'About Us', href: '#' },
-    { label: 'Our Process', href: '#' },
-    { label: 'Case Studies', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Portfolio', href: '/portfolio' },
+    { label: 'Contact', href: '/contact' },
   ],
   Resources: [
-    { label: 'Blog & Insights', href: '#' },
-    { label: 'Documentation', href: '#' },
-    { label: 'Support Center', href: '#' },
-    { label: 'FAQ', href: '#' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
+    { label: 'Sitemap', href: '/sitemap' },
   ],
 };
 
