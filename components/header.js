@@ -6,10 +6,10 @@ import { Menu, X, Zap } from 'lucide-react';
 import Image from 'next/image';
 
 const navItems = [
-  { label: 'Services', href: '#services' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Process', href: '#process' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '/services' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Process', href: '/process' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export function Header() {
