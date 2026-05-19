@@ -3,6 +3,7 @@
 import { AuthProvider } from './context/auth-context';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { useAuth } from './context/auth-context';
+import { AppDataProvider } from '@/app/context/app-data-context';
 
 function DashboardLayoutContent({ children }) {
   const { darkMode } = useAuth();
@@ -23,10 +24,12 @@ function DashboardLayoutContent({ children }) {
 
 export default function DashboardLayout({ children }) {
   return (
-    <AuthProvider>
-      <DashboardLayoutContent>
-        {children}
-      </DashboardLayoutContent>
-    </AuthProvider>
+    <AppDataProvider>
+      <AuthProvider>
+        <DashboardLayoutContent>
+          {children}
+        </DashboardLayoutContent>
+      </AuthProvider>
+    </AppDataProvider>
   );
 }
