@@ -2,6 +2,7 @@
 
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { AuthProvider, useAuth } from '@/app/dashboard/context/auth-context';
+import { AppDataProvider } from '@/app/context/app-data-context';
 
 function ClientPortalLayoutContent({ children }) {
   const { darkMode } = useAuth();
@@ -22,10 +23,12 @@ function ClientPortalLayoutContent({ children }) {
 
 export default function ClientPortalLayout({ children }) {
   return (
-    <AuthProvider>
-      <ClientPortalLayoutContent>
-        {children}
-      </ClientPortalLayoutContent>
-    </AuthProvider>
+    <AppDataProvider>
+      <AuthProvider>
+        <ClientPortalLayoutContent>
+          {children}
+        </ClientPortalLayoutContent>
+      </AuthProvider>
+    </AppDataProvider>
   );
 }
